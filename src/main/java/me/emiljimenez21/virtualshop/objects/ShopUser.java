@@ -9,6 +9,34 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
+/** version checker credit to Zombie_Striker from bukkit.org forums */
+
+private static final String SERVER_VERSION;
+static {
+    String name = Bukkit.getServer().getClass().getName();
+    name = name.substring(name.indexOf("craftbukkit.") + "craftbukkit.".length());
+    name = name.substring(0, name.indexOf("."));
+    SERVER_VERSION = name;
+}
+
+public static boolean isVersionHigherThan(int mainVersion, int secondVersion) {
+    String firstChar = SERVER_VERSION.substring(1, 2);
+    int fInt = Integer.parseInt(firstChar);
+    if (fInt < mainVersion)
+        return false;
+    StringBuilder secondChar = new StringBuilder();
+    for (int i = 3; i < 10; i++) {
+        if (SERVER_VERSION.charAt(i) == '_' || SERVER_VERSION.charAt(i) == '.')
+            break;
+        secondChar.append(SERVER_VERSION.charAt(i));
+    }
+
+    int sInt = Integer.parseInt(secondChar.toString());
+    if (sInt <= secondVersion)
+        return false;
+    return true;
+}
+
 public class ShopUser {
     public UUID uuid = null;
     public String name = null;
@@ -61,8 +89,14 @@ public class ShopUser {
     public void playErrorSound() {
         if(Settings.sound)
             try {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+                if(isVersionHigherThan(1,12)){
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+                }
+                else{
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1, 1);
+                }
             } catch (Exception e){
                 // Do Nothing
             }
@@ -71,7 +105,12 @@ public class ShopUser {
     public void playPostedListing() {
         if(Settings.sound)
             try {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                if(isVersionHigherThan(1,12)){
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                }
+                else{
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BELL, 1, 1);
+                }
             } catch (Exception e){
                 // Do Nothing
             }
@@ -80,7 +119,12 @@ public class ShopUser {
     public void playCancelledListing() {
         if(Settings.sound)
             try {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+                if(isVersionHigherThan(1,12)){
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HARP, 1, 1);
+                }
+                else{
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_HARP, 1, 1);
+                }
             } catch (Exception e){
                 // Do Nothing
             }
@@ -89,7 +133,12 @@ public class ShopUser {
     public void playPurchased() {
         if(Settings.sound)
             try {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 1);
+                if(isVersionHigherThan(1,12)){
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 1);
+                }
+                else{
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_CHIME, 1, 1);
+                }
             } catch (Exception e){
                 // Do Nothing
             }
